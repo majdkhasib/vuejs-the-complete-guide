@@ -1,4 +1,4 @@
-function getAttackValue(min, max) {
+function getRandomValue(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 const app = Vue.createApp({
@@ -15,27 +15,53 @@ const app = Vue.createApp({
   },
   methods: {
     attackMonster() {
-      const attackValue = getAttackValue(5, 15);
+      const attackValue = getRandomValue(5, 15);
       this.monsterHealth -= attackValue;
       console.log(
-        `Monster got attacked with (${attackValue}) damage and his health is:${this.monsterHealth}`
+        `Monster got attacked with (${attackValue}) damage and his current health is:${this.monsterHealth}`
       );
       this.attackPlayer();
     },
     attackPlayer() {
-      const attackValue = getAttackValue(10, 22);
+      const attackValue = getRandomValue(10, 22);
       this.playerHealth -= attackValue;
       console.log(
-        `Player got attacked with (${attackValue}) damage and his health is:${this.playerHealth}`
+        `Player got attacked with (${attackValue}) damage and his current health is:${this.playerHealth}`
       );
     },
     specialAttackMonster() {
-      const attackValue = getAttackValue(10, 30);
+      const attackValue = getRandomValue(10, 30);
       this.monsterHealth -= attackValue;
       console.log(
-        `Monster got attacked with (${attackValue}) damage and his health is:${this.monsterHealth}`
+        `Monster got attacked with (${attackValue}) damage and his current health is:${this.monsterHealth}`
       );
       this.attackPlayer();
+    },
+    heal() {
+      this.healPlayer();
+      this.healMonster();
+    },
+    healPlayer() {
+      const healValue = getRandomValue(10, 22);
+      this.playerHealth += healValue;
+      if (this.playerHealth > 100) {
+        console.log(`Player can't be healed, his health is full`);
+        this.playerHealth = 100;
+      } else
+        console.log(
+          `Player got healed with (${healValue}) and his current health is:${this.playerHealth}`
+        );
+    },
+    healMonster() {
+      const healValue = getRandomValue(5, 15);
+      this.monsterHealth += healValue;
+      if (this.monsterHealth > 100) {
+        console.log(`Monster can't be healed, his health is full`);
+        this.monsterHealth = 100;
+      } else
+        console.log(
+          `Monster got attacked with (${healValue}) and his current health is:${this.monsterHealth}`
+        );
     },
   },
 });
