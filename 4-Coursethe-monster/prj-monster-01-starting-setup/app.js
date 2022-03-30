@@ -1,9 +1,17 @@
 function getRandomValue(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
+function logData(logs, who, type, value) {
+  logs.unshift({ id: new Date().toISOString(), who, type, value });
+}
 const app = Vue.createApp({
   data() {
-    return { playerHealth: 100, monsterHealth: 100, winner: null };
+    return {
+      playerHealth: 100,
+      monsterHealth: 100,
+      winner: null,
+      battleLogs: [],
+    };
   },
   computed: {
     monsterHealthStyles() {
@@ -22,6 +30,7 @@ const app = Vue.createApp({
       }
     },
   },
+
   watch: {
     playerHealth(value) {
       if (value <= 0 && this.monsterHealth <= 0) {
@@ -42,6 +51,7 @@ const app = Vue.createApp({
     attackMonster() {
       const attackValue = getRandomValue(5, 15);
       this.monsterHealth -= attackValue;
+      logData(this.battleLogs, "MONSTER", "ATTACK", attackValue);
       console.log(
         `Monster got attacked with (${attackValue}) damage and his current health is:${this.monsterHealth}`
       );
@@ -50,6 +60,8 @@ const app = Vue.createApp({
     attackPlayer() {
       const attackValue = getRandomValue(10, 22);
       this.playerHealth -= attackValue;
+      logData(this.battleLogs, "PLAYER", "ATTACK", attackValue);
+
       console.log(
         `Player got attacked with (${attackValue}) damage and his current health is:${this.playerHealth}`
       );
@@ -57,6 +69,8 @@ const app = Vue.createApp({
     specialAttackMonster() {
       const attackValue = getRandomValue(10, 30);
       this.monsterHealth -= attackValue;
+      logData(this.battleLogs, "MONSTER", "ATTACK", attackValue);
+
       console.log(
         `Monster got attacked with (${attackValue}) damage and his current health is:${this.monsterHealth}`
       );
@@ -72,8 +86,10 @@ const app = Vue.createApp({
     healPlayer() {
       const healValue = getRandomValue(10, 22);
       this.playerHealth += healValue;
+      logData(this.battleLogs, "PLAYER", "HEAL", healValue);
+
       if (this.playerHealth > 100) {
-        console.log(`Player can't be healed, his health is full`);
+        console.log(`Player can't be heal, his health is full`);
         this.playerHealth = 100;
       } else
         console.log(
@@ -83,6 +99,7 @@ const app = Vue.createApp({
     healMonster() {
       const healValue = getRandomValue(5, 15);
       this.monsterHealth += healValue;
+      logData(this.battleLogs, "MONSTER", "HEAL", healValue);
       if (this.monsterHealth > 100) {
         console.log(`Monster can't be healed, his health is full`);
         this.monsterHealth = 100;
@@ -91,10 +108,17 @@ const app = Vue.createApp({
           `Monster got attacked with (${healValue}) and his current health is:${this.monsterHealth}`
         );
     },
+    battleLogPlayerClasses(battleLog) {
+      return battleLog.who === "PLAYER" ? "log--player" : "log--monster";
+    },
+    battleLogValueClasses(battleLog) {
+      return battleLog.type === "ATTACK" ? "log--damage" : "log--heal";
+    },
     reset() {
       this.winner = null;
       this.playerHealth = 100;
       this.monsterHealth = 100;
+      this.logs = [];
       console.clear();
     },
   },
