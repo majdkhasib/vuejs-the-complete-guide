@@ -19,3 +19,7 @@
 *.njsproj
 *.sln
 *.sw*
+#Non tasks
+5-*
+6-*
+7-*
