@@ -29,6 +29,14 @@ const app = Vue.createApp({
         `Player got attacked with (${attackValue}) damage and his health is:${this.playerHealth}`
       );
     },
+    specialAttackMonster() {
+      const attackValue = getAttackValue(10, 30);
+      this.monsterHealth -= attackValue;
+      console.log(
+        `Monster got attacked with (${attackValue}) damage and his health is:${this.monsterHealth}`
+      );
+      this.attackPlayer();
+    },
   },
 });
 app.mount("#game");
