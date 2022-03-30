@@ -3,7 +3,7 @@ function getRandomValue(min, max) {
 }
 const app = Vue.createApp({
   data() {
-    return { playerHealth: 100, monsterHealth: 100 };
+    return { playerHealth: 100, monsterHealth: 100, winner: null };
   },
   computed: {
     monsterHealthStyles() {
@@ -11,6 +11,31 @@ const app = Vue.createApp({
     },
     playerHealthStyles() {
       return { width: `${this.playerHealth}%` };
+    },
+    gameResult() {
+      if (this.winner === "PLAYER") {
+        return "Player won!!!";
+      } else if (this.winner === "MONSTER") {
+        return "Monster won!!!";
+      } else {
+        return "Draw!!!";
+      }
+    },
+  },
+  watch: {
+    playerHealth(value) {
+      if (value <= 0 && this.monsterHealth <= 0) {
+        this.winner = "DRAW";
+      } else if (value <= 0) {
+        this.winner = "MONSTER";
+      }
+    },
+    monsterHealth(value) {
+      if (value <= 0 && this.playerHealth <= 0) {
+        this.winner = "DRAW";
+      } else if (value <= 0) {
+        this.winner = "PLAYER";
+      }
     },
   },
   methods: {
@@ -62,6 +87,12 @@ const app = Vue.createApp({
         console.log(
           `Monster got attacked with (${healValue}) and his current health is:${this.monsterHealth}`
         );
+    },
+    reset() {
+      this.winner = null;
+      this.playerHealth = 100;
+      this.monsterHealth = 100;
+      console.clear();
     },
   },
 });

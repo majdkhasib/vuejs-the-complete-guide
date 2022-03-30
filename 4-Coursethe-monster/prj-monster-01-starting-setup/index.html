@@ -29,7 +29,9 @@
           <div class="healthbar__value" :style="playerHealthStyles"></div>
         </div>
       </section>
-      <section id="controls">
+      <section v-if="winner!==null" class="container"><h2>{{gameResult}}</h2>
+      <button @click="reset">Start a new Game</button></section>
+      <section id="controls" v-if="winner===null">
         <button @click="attackMonster">ATTACK</button>
         <button @click="specialAttackMonster">SPECIAL ATTACK</button>
         <button @click="heal">HEAL</button>
