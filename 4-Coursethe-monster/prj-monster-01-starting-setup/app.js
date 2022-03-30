@@ -62,6 +62,9 @@ const app = Vue.createApp({
       );
       this.attackPlayer();
     },
+    playerSurrendered() {
+      this.winner = "MONSTER";
+    },
     heal() {
       this.healPlayer();
       this.healMonster();
