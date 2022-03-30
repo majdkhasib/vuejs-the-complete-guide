@@ -5,7 +5,14 @@ const app = Vue.createApp({
   data() {
     return { playerHealth: 100, monsterHealth: 100 };
   },
-
+  computed: {
+    monsterHealthStyles() {
+      return { width: `${this.monsterHealth}%` };
+    },
+    playerHealthStyles() {
+      return { width: `${this.playerHealth}%` };
+    },
+  },
   methods: {
     attackMonster() {
       const attackValue = getAttackValue(5, 15);
