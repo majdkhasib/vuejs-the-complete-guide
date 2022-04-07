@@ -1,29 +1,41 @@
 <template>
   <div>
-    <section>
-      <coach-filter @change-filter="changeFilter"></coach-filter>
-    </section>
-    <base-card>
-      <div class="controls">
-        <base-button mode="outline">Refresh</base-button>
-        <base-button link to="/register" v-if="!isCoach"
-          >Register as Coach</base-button
-        >
-      </div>
-      <ul v-if="hasCoaches">
-        <coach-item
-          v-for="coach in filterdCoaches"
-          :key="coach.id"
-          :id="coach.id"
-          :first-name="coach.firstName"
-          :last-name="coach.lastName"
-          :rate="coach.hourlyRate"
-          :areas="coach.areas"
-          >{{ coach.firstName }}</coach-item
-        >
-      </ul>
-      <h3 v-else>No coaches found</h3>
-    </base-card>
+    <base-dialog
+      :show="!!error"
+      title="An error occurred!"
+      @close="handleError"
+    >
+      <p>{{ error }}</p>
+    </base-dialog>
+    <div>
+      <section>
+        <coach-filter @change-filter="changeFilter"></coach-filter>
+      </section>
+      <base-card>
+        <div class="controls">
+          <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
+          <base-button link to="/register" v-if="!isCoach && !isLoading"
+            >Register as Coach</base-button
+          >
+        </div>
+        <div v-if="isLoading">
+          <base-spinner></base-spinner>
+        </div>
+        <ul v-else-if="hasCoaches">
+          <coach-item
+            v-for="coach in filterdCoaches"
+            :key="coach.id"
+            :id="coach.id"
+            :first-name="coach.firstName"
+            :last-name="coach.lastName"
+            :rate="coach.hourlyRate"
+            :areas="coach.areas"
+            >{{ coach.firstName }}</coach-item
+          >
+        </ul>
+        <h3 v-else>No coaches found</h3>
+      </base-card>
+    </div>
   </div>
 </template>
 
@@ -36,6 +48,8 @@ export default {
   components: { CoachItem, CoachFilter },
   data() {
     return {
+      isLoading: false,
+      error: null,
       chosenAreas: { frontend: true, backend: true, career: true },
     };
   },
@@ -62,6 +76,21 @@ export default {
     changeFilter(chosenAreas) {
       this.chosenAreas = chosenAreas;
     },
+    async loadCoaches() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('coaches/loadCoaches');
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
+      this.isLoading = false;
+    },
+    handleError() {
+      this.error = null;
+    },
+  },
+  created() {
+    this.loadCoaches();
   },
 };
 </script>

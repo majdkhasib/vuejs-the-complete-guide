@@ -6,4 +6,7 @@ export default {
   registerUser(state) {
     state.userIsRegistered = true;
   },
+  setCoaches(state, payload) {
+    state.coaches = payload;
+  },
 };
