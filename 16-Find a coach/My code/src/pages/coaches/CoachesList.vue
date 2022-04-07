@@ -1,6 +1,8 @@
 <template>
   <div>
-    <section>FILTER</section>
+    <section>
+      <coach-filter @change-filter="changeFilter"></coach-filter>
+    </section>
     <base-card>
       <div class="controls">
         <base-button mode="outline">Refresh</base-button>
@@ -8,7 +10,7 @@
       </div>
       <ul v-if="hasCoaches">
         <coach-item
-          v-for="coach in coaches"
+          v-for="coach in filterdCoaches"
           :key="coach.id"
           :id="coach.id"
           :first-name="coach.firstName"
@@ -24,12 +26,40 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import CoachItem from '../../components/coaches/CoahItem.vue';
+import CoachFilter from '../../components/coaches/CoachFilter.vue';
 export default {
-  components: { CoachItem },
+  components: { CoachItem, CoachFilter },
+  data() {
+    return {
+      chosenAreas: { frontend: true, backend: true, career: true },
+    };
+  },
   computed: {
-    ...mapGetters('coaches', ['coaches', 'hasCoaches']),
+    filterdCoaches() {
+      const coaches = this.$store.getters['coaches/coaches'];
+      const f = coaches.filter((coach) => {
+        if (this.chosenAreas.frontend && coach.areas.includes('frontend'))
+          return true;
+        if (this.chosenAreas.backend && coach.areas.includes('backend'))
+          return true;
+        if (this.chosenAreas.career && coach.areas.includes('career'))
+          return true;
+        return false;
+      });
+      return f;
+    },
+    hasCoaches() {
+      return this.filterdCoaches.length > 0;
+    },
+  },
+  methods: {
+    changeFilter(chosenAreas) {
+      this.chosenAreas = chosenAreas;
+    },
+  },
+  created() {
+    this.filterdCoaches = this.coaches;
   },
 };
 </script>
