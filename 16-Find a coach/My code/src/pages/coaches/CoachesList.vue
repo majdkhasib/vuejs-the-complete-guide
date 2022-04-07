@@ -63,9 +63,6 @@ export default {
       this.chosenAreas = chosenAreas;
     },
   },
-  created() {
-    this.filterdCoaches = this.coaches;
-  },
 };
 </script>
 
