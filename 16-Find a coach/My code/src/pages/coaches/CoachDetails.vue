@@ -6,10 +6,13 @@
     >
   </section>
   <section>
-    <base-card
-      ><h2>Interrested?Reach out</h2>
-      <base-button link :to="contactLink">Contact</base-button></base-card
-    >
+    <base-card>
+      <header>
+        <h2>Interrested?Reach out</h2>
+        <base-button link :to="contactLink">Contact</base-button>
+      </header>
+      <router-view></router-view
+    ></base-card>
   </section>
   <section>
     <base-card
@@ -38,7 +41,8 @@ export default {
       return this.currentCoach.hourlyRate;
     },
     contactLink() {
-      return this.$route.path + '/' + this.id + '/contact';
+      if (this.$route.path.endsWith('contact')) return this.$route.path;
+      return this.$route.path + '/contact';
     },
     areas() {
       return this.currentCoach.areas;
@@ -48,7 +52,6 @@ export default {
     },
   },
   created() {
-    console.log(this.id);
     const coaches = this.$store.getters['coaches/coaches'];
     this.currentCoach = coaches.find((coach) => coach.id === this.id);
   },

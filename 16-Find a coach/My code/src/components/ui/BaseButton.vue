@@ -27,9 +27,9 @@ a {
   color: white;
   cursor: pointer;
   border-radius: 30px;
-
   margin-right: 0.5rem;
   padding: 1em;
+  margin-bottom: 1em;
 }
 a:hover,
 a:active,
