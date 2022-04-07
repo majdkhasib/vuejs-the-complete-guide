@@ -6,7 +6,9 @@
     <base-card>
       <div class="controls">
         <base-button mode="outline">Refresh</base-button>
-        <base-button link to="/register">Register as Coach</base-button>
+        <base-button link to="/register" v-if="!isCoach"
+          >Register as Coach</base-button
+        >
       </div>
       <ul v-if="hasCoaches">
         <coach-item
@@ -28,6 +30,8 @@
 <script>
 import CoachItem from '../../components/coaches/CoahItem.vue';
 import CoachFilter from '../../components/coaches/CoachFilter.vue';
+import { mapGetters } from 'vuex';
+
 export default {
   components: { CoachItem, CoachFilter },
   data() {
@@ -52,6 +56,7 @@ export default {
     hasCoaches() {
       return this.filterdCoaches.length > 0;
     },
+    ...mapGetters('coaches', ['isCoach']),
   },
   methods: {
     changeFilter(chosenAreas) {

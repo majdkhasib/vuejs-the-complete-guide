@@ -2,8 +2,9 @@ export default {
   registerCoach(context, payload) {
     context.commit(
       'registerCoach',
-      { id: new Date().toISOString(), ...payload },
+      { id: context.rootGetters.userId, ...payload },
       payload
     );
+    context.commit('registerUser');
   },
 };
