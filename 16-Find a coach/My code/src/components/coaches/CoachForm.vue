@@ -39,6 +39,7 @@
 
 <script>
 export default {
+  emits: ['submit-form'],
   data() {
     return {
       firstName: '',
@@ -49,12 +50,20 @@ export default {
     };
   },
   methods: {
-    submit() {},
+    submit() {
+      this.$emit('submit-form', {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        description: this.description,
+        hourlyRate: this.rate,
+        areas: this.areas,
+      });
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .form-control {
   margin: 1em 0;
 }
