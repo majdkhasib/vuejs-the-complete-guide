@@ -3,7 +3,7 @@ import coachesModule from './module/coaches/index';
 import requestsModule from './module/requests/index';
 const store = createStore({
   state() {
-    return { userId: 'c3' };
+    return { userId: 'c7' };
   },
   modules: { coaches: coachesModule, requests: requestsModule },
   getters: {
