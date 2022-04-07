@@ -36,6 +36,7 @@ export default {
         this.formIsValid = false;
         return;
       }
+      console.log(this.id);
       this.$store.dispatch('requests/contactCoach', {
         coachId: this.id,
         email: this.email,
