@@ -11,7 +11,10 @@ export default {
     context.commit('registerCoach', { id: userId, ...coachData });
     context.commit('registerUser');
   },
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+    if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+      return;
+    }
     const response = await fetch(
       `https://find-a-coach-7dc72-default-rtdb.firebaseio.com/coaches.json`
     );
@@ -35,5 +38,6 @@ export default {
     }
 
     context.commit('setCoaches', coaches);
+    context.commit('setFetchTimeStamp');
   },
 };

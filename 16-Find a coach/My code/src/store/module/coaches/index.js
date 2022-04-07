@@ -5,6 +5,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      lastFetched: null,
       userIsRegistered: false,
       coaches: [],
     };
