@@ -1,7 +1,11 @@
-<template><h1>Coaches</h1></template>
+<template>
+  <section>FILTER</section>
+  <section><coaches></coaches></section>
+</template>
 
 <script>
-export default {};
+import Coaches from '../../components/coaches/Coahces.vue';
+export default { components: { coaches: Coaches } };
 </script>
 
 <style>
